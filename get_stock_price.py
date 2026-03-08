@@ -1,24 +1,26 @@
 import datetime
 import logging
 from pprint import pprint
-
-from pykrx.website.comm import webio
-from login import _session_post_read, _session_get_read, start_session, login_krx
-from pykrx import stock
-from dotenv import load_dotenv
 import os
+from dotenv import load_dotenv
+from models import dataclass, EtfInfo
+from pykrx.website.comm import webio
+from pykrx import stock
+from login import KrxSessionManager
+
 load_dotenv()
 
 KRX_ID = os.getenv("KRX_ID")
 KRX_PASSWORD = os.getenv("KRX_PASSWORD")
-start_session()
-
-webio.Post.read = _session_post_read
-webio.Get.read = _session_get_read
-
 ASSET_MANAGER = {"TIGER", "KODEX"}
 
-if login_krx(KRX_ID, KRX_PASSWORD):
+# 1. 인프라스트럭처(통신) 객체 생성
+krx_session = KrxSessionManager(login_id=KRX_ID, login_pw=KRX_PASSWORD)
+
+# 2. pykrx에 세션 주입
+krx_session.patch_pykrx(webio)
+
+if krx_session.login():
     etf_tickers = stock.get_etf_ticker_list(datetime.date.today().strftime("%Y%m%d"))
     etfs = []
     for etf_ticker in etf_tickers:
@@ -32,11 +34,12 @@ if login_krx(KRX_ID, KRX_PASSWORD):
 
         if etf_company not in ASSET_MANAGER:
             continue
-        etfs.append({
-            "ticker": etf_ticker,
-            "company": etf_company,
-            "name": etf_name
-        })
+        etfs.append(
+            EtfInfo(
+                etf_ticker,
+                etf_company,
+                etf_name)
+        )
     pprint(etfs)
 
 else:
