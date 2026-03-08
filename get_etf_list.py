@@ -7,7 +7,7 @@ from models import dataclass, EtfInfo
 from pykrx.website.comm import webio
 from pykrx import stock
 from login import KrxSessionManager
-
+import pandas as pd
 load_dotenv()
 
 KRX_ID = os.getenv("KRX_ID")
@@ -37,7 +37,8 @@ if krx_session.login():
                 etf_company,
                 etf_name)
         )
-    pprint(etfs)
+    df = pd.DataFrame(etfs)
 
+    df.to_csv("etf_data.csv", index=False, encoding="utf-8")
 else:
     logging.error("로그인 실패")
