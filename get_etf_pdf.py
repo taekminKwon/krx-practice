@@ -33,7 +33,7 @@ def fetch_and_save(etf_ticker: str) -> str:
         return f"[ERROR] {etf_ticker}: {e}"
 
 
-def load_tickers(csv_path: str) -> list[str]:
+def load_etf_tickers(csv_path: str) -> list[str]:
     tickers = []
     with open(csv_path, "r", encoding="utf-8") as csvfile:
         reader = csv.reader(csvfile)
@@ -48,7 +48,7 @@ def load_tickers(csv_path: str) -> list[str]:
 
 
 def main():
-    tickers = load_tickers("processed_etf_data.csv")
+    tickers = load_etf_tickers("processed_etf_data.csv")
     total = len(tickers)
     print(f"total: {total}")
 
