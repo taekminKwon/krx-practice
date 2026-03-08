@@ -27,10 +27,7 @@ if krx_session.login():
         etf_info = stock.get_etf_ticker_name(etf_ticker).split()
         # 회사 및 이름 분리
         etf_company = etf_info[0]
-        etf_name = ""
-
-        for etf in etf_info[1:]:
-            etf_name += etf + " "
+        etf_name = " ".join(etf_info[1:])
 
         if etf_company not in ASSET_MANAGER:
             continue
