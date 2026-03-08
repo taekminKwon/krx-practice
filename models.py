@@ -13,3 +13,13 @@ class StockCompanyInfo:
     market_type: str
     corp_name : str
     corp_code: str
+
+@dataclass
+class CorporationInfo:
+    crno: str
+    sic_name: str
+    enp_rpr_fnm: str
+    address: str
+    homepage: str
+    enp_main_biz_name: str
+    corp_name: str
