@@ -23,3 +23,12 @@ class CorporationInfo:
     homepage: str
     enp_main_biz_name: str
     corp_name: str
+
+@dataclass
+class EtfOHLCV:
+    ticker: str
+    nav: float
+    close: int
+    trade_date: datetime.date
+    volume: int
+    change_rate: float

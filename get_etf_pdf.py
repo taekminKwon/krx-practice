@@ -35,10 +35,13 @@ def fetch_and_save(etf_ticker: str) -> str:
 
 def load_etf_tickers(csv_path: str) -> list[str]:
     tickers = []
+    size = 0
     with open(csv_path, "r", encoding="utf-8") as csvfile:
         reader = csv.reader(csvfile)
         next(reader, None)  # 헤더 스킵
         for row in reader:
+            if size == 10:
+                break
             if not row:
                 continue
             etf_ticker = row[0].strip()
